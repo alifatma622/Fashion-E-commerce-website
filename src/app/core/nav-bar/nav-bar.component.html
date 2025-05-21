@@ -1,0 +1,28 @@
+<nav class="navbar">
+  <div class="navbar-left"> <button class="menu-btn" (click)="toggleSidebar()"> <span></span> <span></span>
+      <span></span> </button>
+    <div class="logo"> <a href="#"><img src="logo.png" alt="LUMEI Logo" /></a> </div>
+  </div>
+  <div class="nav-container">
+    <ul class="nav-links">
+       <li><a routerLink="/" routerLinkActive="active">Home</a></li>
+    <li><a routerLink="/shop" >Shop</a></li>
+    <li><a routerLink="/about" >About Us</a></li>
+    <li><a routerLink="/blog" >Blog</a></li>
+    <li><a routerLink="/contact">Contact Us</a></li>
+    </ul>
+  </div>
+  <div class="search-cart"> <a href="#"><i class="fas fa-search"></i></a> <a href="#"><i class="fas fa-user"></i></a> <a
+      href="#"><i class="fas fa-heart"></i></a> <a href="#"><i class="fas fa-shopping-cart"></i><span
+        class="cart-count">0</span></a> </div>
+</nav> <!-- Sidebar for mobile -->
+<div class="sidebar" [class.open]="sidebarOpen"> <button class="close-btn" (click)="toggleSidebar()">&times;</button>
+  <ul>
+     <li><a routerLink="/" routerLinkActive="active">Home</a></li>
+    <li><a routerLink="/shop" routerLinkActive="active">Shop</a></li>
+    <li><a routerLink="/about" routerLinkActive="active">About Us</a></li>
+    <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
+    <li><a routerLink="/contact" routerLinkActive="active">Contact Us</a></li>
+  </ul>
+</div>
+<div class="sidebar-backdrop" *ngIf="sidebarOpen" (click)="toggleSidebar()"></div>

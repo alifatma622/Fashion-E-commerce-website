@@ -1,0 +1,34 @@
+<!-- ////////////////////////////////Shop of Header ////////////////////////////////// -->
+<div class="shop-main-wrapper">
+  <div class="category-hero" style="background-image: url('assets/slider3.jpg')">
+    <div class="category-hero-content">
+      <h1 class="category-title">Shop</h1>
+      <div class="category-breadcrumb">Home / Shop </div>
+    </div>
+    <div class="category-circles">
+      <button class="arrow-btn" (click)="prevSlide()">&lt;</button>
+      <div class="category-circle" *ngFor="let cat of visibleCategories" [class.active]="cat === hoveredCat"
+        (mouseenter)="hoveredCat = cat" (mouseleave)="hoveredCat = null">
+        <img [src]="'http://localhost:5149' + cat.imgURL" [alt]="cat.name" />
+        <div class="circle-name">{{ cat.name }}</div>
+      </div>
+      <button class="arrow-btn" (click)="nextSlide()">&gt;</button>
+    </div>
+  </div>
+
+
+  <!-- // ////////////////////////////////Shop of Content //////////////////////////////////  -->
+  <!-- <div class="shop-content">
+    <!-- Sidebar Filter -->
+  <aside class="shop-sidebar">
+    <div class="filter-section">
+      <h4>Categories</h4>
+      <ul>
+        <li *ngFor="let cat of categories">
+          <label>
+            <input type="radio" name="category" [value]="cat.id">
+            {{cat.name}}
+          </label>
+        </li>
+      </ul>
+    </div> 
