@@ -8,6 +8,7 @@ import { CoreModule } from './core/core.module';
 import { HomeModule } from './home/home.module';
 import { provideHttpClient } from '@angular/common/http';
 import { ShopModule } from './shop/shop.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ShopModule } from './shop/shop.module';
     CoreModule,
     HomeModule,
     SharedModule,
-    ShopModule
+    ShopModule,
+     FormsModule
   ],
   providers: [
   provideClientHydration(),

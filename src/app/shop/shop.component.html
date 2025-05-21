@@ -18,17 +18,100 @@
 
 
   <!-- // ////////////////////////////////Shop of Content //////////////////////////////////  -->
-  <!-- <div class="shop-content">
-    <!-- Sidebar Filter -->
-  <aside class="shop-sidebar">
-    <div class="filter-section">
-      <h4>Categories</h4>
-      <ul>
-        <li *ngFor="let cat of categories">
-          <label>
-            <input type="radio" name="category" [value]="cat.id">
-            {{cat.name}}
-          </label>
-        </li>
-      </ul>
-    </div> 
+
+
+  <div class="container">
+    <!-- Sorting Controls -->
+    <div class="shop-controls">
+      <div class="sorting-dropdown">
+        <select>
+          <option>Default Sorting</option>
+          <option>Sort by price: low to high</option>
+          <option>Sort by price: high to low</option>
+          <option>Sort by name: A-Z</option>
+          <option>Sort by name: Z-A</option>
+        </select>
+      </div>
+
+      <div class="view-options">
+        <button class="view-btn list-view-btn">‖</button>
+        <button class="view-btn grid-view-btn active">⋮⋮</button>
+        <button class="view-btn large-grid-btn">⋮⋮⋮</button>
+        <button class="view-btn menu-btn">≡</button>
+      </div>
+    </div>
+
+    <!-- Shop Content -->
+    <div class="shop-content">
+      <!-- Sidebar Filter -->
+      <aside class="shop-sidebar">
+        <div class="filter-section">
+          <h4>Categories</h4>
+          <ul>
+            <li *ngFor="let cat of categories">
+              <label>
+                <input type="radio" name="category"
+                       [value]="cat.id"
+                       (change)="filterByCategory(cat)"
+                       [checked]="selectedCategoryId === cat.id">
+                {{cat.name}}
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="filter-section">
+          <h4>Price</h4>
+          <input type="range" [min]="minPrice" [max]="maxPrice" [(ngModel)]="selectedMinPrice" (change)="onPriceChange()">
+          <input type="range" [min]="minPrice" [max]="maxPrice" [(ngModel)]="selectedMaxPrice" (change)="onPriceChange()">
+          <div class="price-range">
+            Range: <span class="price">{{selectedMinPrice}}$ - {{selectedMaxPrice}}$</span>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h4>Color</h4>
+          <div class="color-list">
+            <span *ngFor="let color of colors"
+                  class="color-circle"
+                  [ngStyle]="{'background': color}"
+                  [class.selected]="selectedColor === color"
+                  (click)="filterByColor(color)">
+            </span>
+          </div>
+        </div>
+
+        <button (click)="clearFilters()" class="clear-btn">Clear Filters</button>
+      </aside>
+
+      <!-- Products Grid -->
+      <section class="shop-products">
+        <div class="products-grid">
+          <div class="product-card" *ngFor="let item of products">
+            <!-- <div class="product-discount" *ngIf="item.discountPercentage">-{{item.discountPercentage}}%</div>
+            <div class="product-tag" *ngIf="item.isHot">Hot</div> -->
+
+            <div class="product-image">
+              <img [src]="item.images[0]" [alt]="item.name">
+              <div class="product-actions">
+                <button class="action-btn like-btn">♡</button>
+                <button class="action-btn view-btn">👁</button>
+                <button class="action-btn compare-btn">⟲</button>
+              </div>
+            </div>
+
+            <div class="product-info">
+              <h3 class="product-name">{{item.name}}</h3>
+              <div class="product-category">{{item.categoryName}}</div>
+              <div class="product-price">
+                <span class="new-price">${{item.newPrice}}</span>
+                <span class="old-price" *ngIf="item.oldPrice">${{item.oldPrice}}</span>
+              </div>
+              <p class="product-description">{{item.description}}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
