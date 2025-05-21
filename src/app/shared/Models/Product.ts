@@ -4,12 +4,12 @@ export interface IProduct {
   newPrice: number
   oldPrice: number
   quantity: number
-  images: Image[]
+  images: IImage[]
   categoryName: string
  color?: string;
 }
 
-export interface Image {
+export interface IImage {
   imgURL: string
   description: string
   productId: string

@@ -1,3 +1,4 @@
+
 <!-- ////////////////////////////////Shop of Header ////////////////////////////////// -->
 <div class="shop-main-wrapper">
   <div class="category-hero" style="background-image: url('assets/slider3.jpg')">
@@ -68,50 +69,35 @@
             Range: <span class="price">{{selectedMinPrice}}$ - {{selectedMaxPrice}}$</span>
           </div>
         </div>
-
-        <div class="filter-section">
-          <h4>Color</h4>
-          <div class="color-list">
-            <span *ngFor="let color of colors"
-                  class="color-circle"
-                  [ngStyle]="{'background': color}"
-                  [class.selected]="selectedColor === color"
-                  (click)="filterByColor(color)">
-            </span>
-          </div>
-        </div>
-
         <button (click)="clearFilters()" class="clear-btn">Clear Filters</button>
       </aside>
 
       <!-- Products Grid -->
-      <section class="shop-products">
-        <div class="products-grid">
-          <div class="product-card" *ngFor="let item of products">
-            <!-- <div class="product-discount" *ngIf="item.discountPercentage">-{{item.discountPercentage}}%</div>
-            <div class="product-tag" *ngIf="item.isHot">Hot</div> -->
-
-            <div class="product-image">
-              <img [src]="item.images[0]" [alt]="item.name">
-              <div class="product-actions">
-                <button class="action-btn like-btn">♡</button>
-                <button class="action-btn view-btn">👁</button>
-                <button class="action-btn compare-btn">⟲</button>
-              </div>
-            </div>
-
-            <div class="product-info">
-              <h3 class="product-name">{{item.name}}</h3>
-              <div class="product-category">{{item.categoryName}}</div>
-              <div class="product-price">
-                <span class="new-price">${{item.newPrice}}</span>
-                <span class="old-price" *ngIf="item.oldPrice">${{item.oldPrice}}</span>
-              </div>
-              <p class="product-description">{{item.description}}</p>
-            </div>
-          </div>
+     <!-- Products Grid -->
+<section class="shop-products">
+  <div class="products-grid">
+    <div class="product-card" *ngFor="let item of products">
+      <div class="product-image">
+        <img *ngIf="item.images.length > 0" [src]="'http://localhost:5149' + item.images[0].imgURL" [alt]="item.name"/>
+        <div class="product-actions">
+          <button class="action-btn like-btn">♡</button>
+          <button class="action-btn view-btn">👁</button>
+          <button class="action-btn compare-btn">⟲</button>
         </div>
-      </section>
+      </div>
+
+      <div class="product-info">
+        <h3 class="product-name">{{item.name}}</h3>
+        <div class="product-category">{{item.categoryName}}</div>
+        <div class="product-price">
+          <span class="new-price">${{item.newPrice}}</span>
+          <span class="old-price" *ngIf="item.oldPrice">${{item.oldPrice}}</span>
+        </div>
+        <p class="product-description">{{item.description}}</p>
+      </div>
+    </div> <!-- Close product-card here -->
+  </div>
+</section>
     </div>
   </div>
 </div>

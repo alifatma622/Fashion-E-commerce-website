@@ -17,9 +17,8 @@ export class ShopComponent implements OnInit {
   categories: ICategory[] = [];
 
   // Products
-  colors: string[] = ['#000', '#4d6780', '#6d4c41', '#bdbdbd', '#f48fb1', '#fff', '#ffd600'];
+  
   selectedCategoryId: number | null = null;
-  selectedColor: string = '';
   minPrice: number = 20;
   maxPrice: number = 250;
   selectedMinPrice: number = 20;
@@ -33,6 +32,7 @@ export class ShopComponent implements OnInit {
   ngOnInit(): void {
     this.getAllProducts();
     this.getAllCategories();
+    this.loadProducts();
   }
 
   // slider part
@@ -72,7 +72,7 @@ export class ShopComponent implements OnInit {
 
   // Products
    getAllProducts() {
-    // أرسل الفلاتر للـ API
+  
     this.shopService.getProducts(this.filterParms).subscribe({
       next: (value: Ipagination) => {
         this.products = value.data;
@@ -82,6 +82,16 @@ export class ShopComponent implements OnInit {
       }
     });
   }
+  loadProducts(): void {
+    this.shopService.getProductsWithoutFilter().subscribe(
+      (data) => {
+        this.products = data;
+      },
+      (error) => {
+        console.error('Error fetching products', error);
+      }
+    );
+  }
 
   filterByCategory(cat: ICategory) {
     this.selectedCategoryId = cat.id;
@@ -89,11 +99,6 @@ export class ShopComponent implements OnInit {
     this.getAllProducts();
   }
 
-  filterByColor(color: string) {
-    this.selectedColor = color;
-    this.filterParms.Color = color;
-    this.getAllProducts();
-  }
 
   onPriceChange() {
     this.filterParms.MinPrice = this.selectedMinPrice;
@@ -103,10 +108,9 @@ export class ShopComponent implements OnInit {
 
   clearFilters() {
     this.selectedCategoryId = null;
-    this.selectedColor = '';
     this.selectedMinPrice = this.minPrice;
     this.selectedMaxPrice = this.maxPrice;
     this.filterParms = {};
     this.getAllProducts();
-  }
+  }
 }
