@@ -1,13 +1,86 @@
-.form-container{
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-section{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.login-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  border: none;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
   }
+
+  h2 {
+    text-align: center;
+    color: #92614C;
+    margin-bottom: 30px;
+    font-weight: 600;
+    // text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      color: #333;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+      }
+    }
+  }
+
+  .btn-primary {
+    background-color: black;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #92614c;
+    }
+  }
+
+  .error {
+    color: #dc3545;
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .account-message {
+    text-align: center;
+    margin-top: 20px;
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+        color: #92614C;
+      }
+    }
+  }
+}

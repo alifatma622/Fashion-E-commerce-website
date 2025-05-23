@@ -5,7 +5,8 @@ import { IdentityRoutingModule } from './identity-routing.module';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
-// import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/login.component';
+
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { RegisterComponent } from './register/register.component';
 
 
     // LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent
 
 
   ],
