@@ -1,41 +1,51 @@
-import { ShopService } from './shop.service';
 import { Component, OnInit } from '@angular/core';
+import { ShopService } from './shop.service';
 import { IProduct } from '../shared/Models/Product';
 import { ICategory } from '../shared/Models/Category';
 import { Ipagination } from '../shared/Models/Pagination';
 
 @Component({
   selector: 'app-shop',
-  standalone: false,
   templateUrl: './shop.component.html',
-  styleUrl: './shop.component.scss'
+  styleUrls: ['./shop.component.scss'],
+  standalone: false
 })
 export class ShopComponent implements OnInit {
+  // Categories
   visibleCategories: ICategory[] = [];
   currentStart = 0;
   hoveredCat: ICategory | null = null;
   categories: ICategory[] = [];
 
   // Products
-  
   selectedCategoryId: number | null = null;
-  minPrice: number = 20;
-  maxPrice: number = 250;
-  selectedMinPrice: number = 20;
-  selectedMaxPrice: number = 250;
-  filterParms: any = {};
+  minPrice: number = 0;
+  maxPrice: number = 1000;
+  selectedMinPrice: number = 0;
+  selectedMaxPrice: number = 1000;
   products: IProduct[] = [];
+  filteredProducts: IProduct[] = [];
+  pagination?: Ipagination;
+  pageNumber = 1; // Current page number
+  pageSize = 6;   // Number of products per page
 
+  // Search
+  searchQuery: string = '';
+
+  // View options
+  viewMode: 'grid' | 'list' | 'large-grid' | 'four-grid' = 'grid';
+
+  // Sorting
+  sortOption: string = 'default';
 
   constructor(private shopService: ShopService) { }
 
   ngOnInit(): void {
-    this.getAllProducts();
     this.getAllCategories();
     this.loadProducts();
   }
 
-  // slider part
+  // Slider functionality
   updateVisibleCategories() {
     this.visibleCategories = this.categories.slice(this.currentStart, this.currentStart + 4);
   }
@@ -54,7 +64,7 @@ export class ShopComponent implements OnInit {
     }
   }
 
-// Category
+  // Category methods
   getAllCategories() {
     this.shopService.getCategories().subscribe({
       next: (value: ICategory[]) => {
@@ -63,54 +73,125 @@ export class ShopComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-      },
-      complete: () => {
-        console.log('Categories loaded successfully');
       }
     });
   }
 
-  // Products
-   getAllProducts() {
-  
-    this.shopService.getProducts(this.filterParms).subscribe({
-      next: (value: Ipagination) => {
-        this.products = value.data;
+  // Products methods
+  loadProducts(): void {
+    this.shopService.getProducts(this.getFilterParams()).subscribe({
+      next: (response: Ipagination) => {
+        this.products = response.data;
+        this.pagination = response;
+        this.filteredProducts = [...this.products];
+        this.applyAllFilters();
       },
       error: (error) => {
-        console.log(error);
+        console.error('Error fetching products', error);
       }
     });
   }
-  loadProducts(): void {
-    this.shopService.getProductsWithoutFilter().subscribe(
-      (data) => {
-        this.products = data;
-      },
-      (error) => {
-        console.error('Error fetching products', error);
-      }
-    );
+
+  // Helper method to get filter parameters
+  private getFilterParams() {
+    const params: any = {};
+
+    params.pageNumber = this.pageNumber;
+    params.pageSize = this.pageSize;
+
+    if (this.selectedCategoryId) {
+      params.categoryId = this.selectedCategoryId;
+    }
+
+    if (this.selectedMinPrice !== this.minPrice || this.selectedMaxPrice !== this.maxPrice) {
+      params.minPrice = this.selectedMinPrice;
+      params.maxPrice = this.selectedMaxPrice;
+    }
+
+    if (this.searchQuery.trim()) {
+      params.search = this.searchQuery.trim();
+    }
+
+    return params;
   }
 
-  filterByCategory(cat: ICategory) {
-    this.selectedCategoryId = cat.id;
-    this.filterParms.CategoryId = cat.id;
-    this.getAllProducts();
+  // Filter methods
+  filterByCategory(cat: ICategory | null) {
+    this.selectedCategoryId = cat ? cat.id : null;
+    this.loadProducts();
   }
-
 
   onPriceChange() {
-    this.filterParms.MinPrice = this.selectedMinPrice;
-    this.filterParms.MaxPrice = this.selectedMaxPrice;
-    this.getAllProducts();
+    this.loadProducts();
   }
 
   clearFilters() {
     this.selectedCategoryId = null;
     this.selectedMinPrice = this.minPrice;
     this.selectedMaxPrice = this.maxPrice;
-    this.filterParms = {};
-    this.getAllProducts();
+    this.searchQuery = '';
+    this.sortOption = 'default';
+    this.loadProducts();
+  }
+
+  // Search functionality
+  onSearchChange() {
+    this.loadProducts();
+  }
+
+  // Apply all filters and sorting
+  applyAllFilters() {
+    this.filteredProducts = this.products.filter(product => {
+      const inPriceRange = product.newPrice >= this.selectedMinPrice && product.newPrice <= this.selectedMaxPrice;
+      const matchesSearch = this.searchQuery.trim() ?
+        product.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(this.searchQuery.toLowerCase()) : true;
+
+      return inPriceRange && matchesSearch;
+    });
+
+    this.applySorting(); // Apply sorting after filtering
+  }
+
+  // View mode functionality
+  setViewMode(mode: 'grid' | 'list' | 'large-grid' | 'four-grid') {
+    this.viewMode = mode;
+  }
+
+  // Sorting functionality
+  onSortChange() {
+    this.applySorting();
+  }
+
+  applySorting() {
+    switch (this.sortOption) {
+      case 'price-low-high':
+        this.filteredProducts.sort((a, b) => a.newPrice - b.newPrice);
+        break;
+      case 'price-high-low':
+        this.filteredProducts.sort((a, b) => b.newPrice - a.newPrice);
+        break;
+      case 'name-asc':
+        this.filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'name-desc':
+        this.filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        // Keep original order (server-side order)
+        break;
+    }
+  }
+
+  // أضف هذه الدالة إلى المكون
+  getCategoryCount(categoryId: number): number {
+    if (!categoryId) return this.products.length;
+    return this.products.filter(p => p.categoryId === categoryId).length;
+  }
+
+  // Method to handle page changes
+  onPageChange(newPage: number) {
+    this.pageNumber = newPage;
+    this.loadProducts();
   }
 }

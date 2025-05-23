@@ -1,7 +1,7 @@
-import { SharedModule } from './shared/shared.module';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -9,6 +9,8 @@ import { HomeModule } from './home/home.module';
 import { provideHttpClient } from '@angular/common/http';
 import { ShopModule } from './shop/shop.module';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from './shared/shared.module';
+import { IdentityModule } from './identity/identity.module';
 
 @NgModule({
   declarations: [
@@ -21,11 +23,13 @@ import { FormsModule } from '@angular/forms';
     HomeModule,
     SharedModule,
     ShopModule,
-     FormsModule
+    FormsModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(), // ToastrModule added
+    IdentityModule
   ],
   providers: [
-  provideClientHydration(),
-  provideHttpClient()
+    provideHttpClient()
   ],
   bootstrap: [AppComponent]
 })
