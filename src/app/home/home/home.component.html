@@ -1,1 +1,214 @@
 <app-slider></app-slider>
+
+
+<div class="home-container">
+  <h1>Shop by Category</h1>
+  <div class="categories">
+    <div *ngFor="let category of categories" class="category">
+      <div class="product-card">
+        <img [src]="'http://localhost:5149' + category.imgURL" [alt]="category.name">
+        <h2>{{ category.name }}</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- hero-section.component.html -->
+<section class="hero-section" style="background-image: url('assets/G.jpg');">
+  <div class="hero-content">
+    <p class="hero-subtitle">Bold and Beautiful</p>
+    <h1 class="hero-title">Trends From Around The World</h1>
+    <button class="hero-button" routerLink="/Login">Shop Now</button>
+  </div>
+</section>
+
+<!-- testimonials.component.html -->
+<section class="testimonials-section">
+  <div class="testimonials-container">
+    <div class="testimonials-slider"
+         [style.transform]="'translateX(-' + (currentSlide * 100) + '%)'">
+
+      <div class="testimonial-slide" *ngFor="let testimonial of testimonials; let i = index">
+        <div class="testimonial-content">
+          <!-- Quote Icon -->
+          <div class="quote-icon">
+            <i class="fas fa-quote-left"></i>
+          </div>
+
+          <!-- Testimonial Text -->
+          <blockquote class="testimonial-text">
+            {{ testimonial.text }}
+          </blockquote>
+
+          <!-- Customer Info -->
+          <div class="customer-info">
+            <div class="customer-avatar">
+              <img [src]="testimonial.avatar" [alt]="testimonial.name" class="avatar-image">
+            </div>
+            <div class="customer-details">
+              <h4 class="customer-name">{{ testimonial.name }}</h4>
+              <p class="customer-title">{{ testimonial.title }}</p>
+            </div>
+          </div>
+
+          <!-- Rating Stars -->
+          <div class="rating-stars">
+            <i class="fas fa-star"
+               *ngFor="let star of getStarsArray(testimonial.rating)"
+               [class.filled]="star <= testimonial.rating"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="testimonials-dots">
+      <button
+        class="dot"
+        *ngFor="let testimonial of testimonials; let i = index"
+        [class.active]="i === currentSlide"
+        (click)="goToSlide(i)"
+        [attr.aria-label]="'Go to testimonial ' + (i + 1)">
+      </button>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <button class="nav-arrow nav-arrow-left"
+            (click)="previousSlide()"
+            [disabled]="currentSlide === 0"
+            aria-label="Previous testimonial">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <button class="nav-arrow nav-arrow-right"
+            (click)="nextSlide()"
+            [disabled]="currentSlide === testimonials.length - 1"
+            aria-label="Next testimonial">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- Auto-play controls -->
+  <div class="autoplay-controls">
+    <button class="control-btn" (click)="toggleAutoplay()">
+      <i class="fas" [class.fa-pause]="isAutoplayActive" [class.fa-play]="!isAutoplayActive"></i>
+      {{ isAutoplayActive ? 'Pause' : 'Play' }}
+    </button>
+  </div>
+</section>
+
+<!-- footer.component.html -->
+<footer class="footer">
+  <!-- Product Gallery Section -->
+  <div class="product-gallery">
+    <div class="product-item">
+      <img src="assets/l4.jpg" alt="Handbag" class="product-image">
+    </div>
+    <div class="product-item">
+      <img src="assets/l3.jpg" alt="White Outfit" class="product-image">
+    </div>
+    <div class="product-item">
+      <img src="assets/l5.jpg" alt="Black Shoes" class="product-image">
+    </div>
+    <div class="product-item">
+      <img src="assets/l6.jpg" alt="Model" class="product-image">
+    </div>
+    <div class="product-item">
+      <img src="assets/l7.jpg" alt="Orange Dress" class="product-image">
+    </div>
+    <div class="product-item">
+      <img src="assets/l8.jpg" alt="Boots" class="product-image">
+    </div>
+  </div>
+
+  <!-- Footer Content -->
+  <div class="footer-content">
+    <div class="footer-container">
+      <!-- Contact Us Section -->
+      <div class="footer-section">
+        <h3 class="footer-title">Contact Us</h3>
+        <ul class="footer-links">
+          <li><a href="/about" class="footer-link">About Us</a></li>
+          <li><a href="/careers" class="footer-link">Careers</a></li>
+          <li><a href="/delivery" class="footer-link">Delivery Information</a></li>
+          <li><a href="/privacy" class="footer-link">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link">Terms & Condition</a></li>
+        </ul>
+      </div>
+
+      <!-- Information Section -->
+      <div class="footer-section">
+        <h3 class="footer-title">Information</h3>
+        <ul class="footer-links">
+          <li><a href="/account" class="footer-link">My Account</a></li>
+          <li><a href="/login" class="footer-link">Login</a></li>
+          <li><a href="/cart" class="footer-link">My Cart</a></li>
+          <li><a href="/wishlist" class="footer-link">Wishlist</a></li>
+          <li><a href="/checkout" class="footer-link">Checkout</a></li>
+        </ul>
+      </div>
+
+      <!-- Social Media Section -->
+      <div class="footer-section">
+        <h3 class="footer-title">Follow Us</h3>
+        <ul class="footer-links social-links">
+          <li>
+            <a href="#" class="footer-link social-link">
+              <i class="fab fa-facebook-f"></i>
+              Facebook
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer-link social-link" >
+              <i class="fab fa-pinterest-p"></i>
+              Pinterest
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer-link social-link" >
+              <i class="fab fa-instagram"></i>
+              Instagram
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer-link social-link" >
+              <i class="fab fa-twitter"></i>
+              Twitter
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Subscribe Section -->
+      <div class="footer-section subscribe-section">
+        <h3 class="footer-title">Subscribe</h3>
+        <p class="subscribe-text">
+          Claim your exclusive discount code when you subscribe to our emails...
+        </p>
+        <form class="subscribe-form" >
+          <div class="input-group">
+            <input
+              type="email"
+              class="subscribe-input"
+              placeholder="Enter your email..."
+              formControlName="email"
+             >
+            <button
+              type="submit"
+              class="subscribe-btn"
+            >
+              Subscribe
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+</footer>

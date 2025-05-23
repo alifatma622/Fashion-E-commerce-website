@@ -12,7 +12,6 @@ reviewCount: any
   quantity: number
   images: IImage[]
   categoryName: string
- color?: string;
 }
 
 export interface IImage {

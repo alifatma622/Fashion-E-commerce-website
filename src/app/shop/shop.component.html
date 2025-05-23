@@ -1,147 +1,235 @@
-<!-- Shop Header -->
+<!-- Enhanced Shop Component with Beautiful Design + Advanced Logic -->
 <div class="shop-main-wrapper">
-  <div class="category-hero" style="background-image: url('assets/slider3.jpg')">
-    <div class="category-hero-content">
-      <h1 class="category-title">Shop</h1>
-      <div class="category-breadcrumb">Home / Shop</div>
-    </div>
-    <div class="category-circles">
-      <button class="arrow-btn" (click)="prevSlide()">&lt;</button>
-      <div
-        class="category-circle"
-        *ngFor="let cat of visibleCategories"
-        [class.active]="cat === hoveredCat || cat.id === selectedCategoryId"
-        (mouseenter)="hoveredCat = cat"
-        (mouseleave)="hoveredCat = null"
-        (click)="filterByCategory(cat)"
-      >
-        <img [src]="'http://localhost:5149' + cat.imgURL" [alt]="cat.name" />
-        <div class="circle-name">{{ cat.name }}</div>
-      </div>
-      <button class="arrow-btn" (click)="nextSlide()">&gt;</button>
-    </div>
-  </div>
+    <!-- Hero Section with Background Image -->
+    <section class="hero-section" style="background-image: url('assets/slide.jpg')">
+        <div class="hero-content">
+            <h1 class="hero-title">Shop</h1>
+            <nav class="hero-breadcrumb">
+                <a href="#">Home</a> / Shop
+            </nav>
 
-  <!-- Shop Content -->
-  <div class="container">
-    <!-- Sorting Controls with Search -->
-    <div class="shop-controls">
-      <div class="sorting-dropdown">
-        <select [(ngModel)]="sortOption" (change)="onSortChange()">
-          <option value="default">Default Sorting</option>
-          <option value="price-low-high">Price: Low to High</option>
-          <option value="price-high-low">Price: High to Low</option>
-          <option value="name-asc">Name: A to Z</option>
-          <option value="name-desc">Name: Z to A</option>
-        </select>
-      </div>
-
-      <!-- Search Input (Middle) -->
-      <div class="search-container">
-        <div class="search-input-wrapper">
-          <input
-            type="text"
-            placeholder="Search products..."
-            [(ngModel)]="searchQuery"
-            (input)="onSearchChange()"
-          />
-          <span class="search-icon">
-            <i class="fa fa-search"></i>
-          </span>
-        </div>
-      </div>
-
-      <!-- View Options -->
-      <div class="view-options">
-        <button (click)="setViewMode('grid')" [class.active]="viewMode === 'grid'">Grid</button>
-        <button (click)="setViewMode('list')" [class.active]="viewMode === 'list'">List</button>
-        <button (click)="setViewMode('large-grid')" [class.active]="viewMode === 'large-grid'">Large Grid</button>
-        <button (click)="setViewMode('four-grid')" [class.active]="viewMode === 'four-grid'">Four Grid</button>
-      </div>
-    </div>
-
-    <!-- Main Content Area -->
-    <div class="shop-content">
-      <!-- Sidebar Filters -->
-      <aside class="shop-sidebar">
-        <!-- Categories Filter -->
-        <div class="sidebar-section">
-          <h3>Categories</h3>
-          <ul class="category-list">
-            <li class="category-item" [class.active]="!selectedCategoryId" (click)="filterByCategory(null)">
-              <span>All Products</span>
-              <span class="category-count">{{products.length}}</span>
-            </li>
-            <li *ngFor="let cat of categories" class="category-item"
-                [class.active]="selectedCategoryId === cat.id"
-                (click)="filterByCategory(cat)">
-              <span>{{cat.name}}</span>
-              <span class="category-count">{{getCategoryCount(cat.id)}}</span>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Price Filter -->
-        <div class="filter-section">
-          <h4>Price</h4>
-          <div class="price-filter">
-            <div class="range-inputs">
-              <input type="range" min="0" max="1000" [(ngModel)]="selectedMinPrice" (change)="onPriceChange()">
-              <input type="range" min="0" max="1000" [(ngModel)]="selectedMaxPrice" (change)="onPriceChange()">
-            </div>
-            <div class="price-range">
-              Range: ${{ selectedMinPrice }} - ${{ selectedMaxPrice }}
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      <!-- Products Grid -->
-      <section class="shop-products">
-        <div class="products-grid" [class.list-view]="viewMode === 'list'"
-             [class.large-grid-view]="viewMode === 'large-grid'"
-             [class.four-grid-view]="viewMode === 'four-grid'">
-          <div *ngFor="let product of filteredProducts" class="product-card">
-            <div class="product-image">
-              <img [src]="'http://localhost:5149' + (product.images[0].imgURL || '/assets/placeholder-product.png')"
-                   [alt]="product.name">
-
-              <div class="product-actions">
-                <button class="action-btn" title="Quick View">
-                  <i class="fas fa-eye"></i>
+            <!-- Enhanced Category Carousel -->
+            <div class="category-carousel">
+                <button class="carousel-btn" (click)="prevSlide()">
+                    <i class="fas fa-chevron-left"></i>
                 </button>
-                <button class="action-btn" title="Add to Wishlist">
-                  <i class="fas fa-heart"></i>
-                </button>
-              </div>
-            </div>
-            <div class="product-info">
-              <h3 class="product-title">{{product.name}}</h3>
-              <div class="product-rating">
-                <div class="stars">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
-                  <i class="far fa-star"></i>
+
+                <div class="category-item" *ngFor="let cat of visibleCategories"
+                     [class.active]="cat === hoveredCat || cat.id === selectedCategoryId"
+                     (mouseenter)="hoveredCat = cat"
+                     (mouseleave)="hoveredCat = null"
+                     (click)="filterByCategory(cat)">
+                    <div class="category-image">
+                        <img [src]="'http://localhost:5149' + cat.imgURL" [alt]="cat.name">
+                    </div>
+                    <span class="category-name">{{cat.name}}</span>
                 </div>
 
-              </div>
-              <div class="product-price">
-                <span class="current-price">${{product.newPrice}}</span>
-                <span *ngIf="product.oldPrice" class="old-price">${{product.oldPrice}}</span>
-              </div>
-              <button class="add-to-cart">Add to Cart</button>
+                <button class="carousel-btn" (click)="nextSlide()">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
-          </div>
         </div>
+    </section>
 
-        <!-- رسالة حال عدم وجود منتجات -->
-        <div class="no-products" *ngIf="filteredProducts.length === 0">
-          <h3>No products found</h3>
-          <p>Try adjusting your search criteria or filters</p>
+    <!-- Shop Controls -->
+    <section class="shop-controls">
+        <div class="container">
+            <div class="controls-wrapper">
+                <div class="controls-left">
+                    <span class="results-count">{{getResultsText()}}</span>
+
+                    <div class="sort-dropdown">
+                        <select [(ngModel)]="sortOption" (change)="onSortChange()">
+                            <option value="default">Default Sorting</option>
+                            <option value="price-low-high">Price: Low to High</option>
+                            <option value="price-high-low">Price: High to Low</option>
+                            <option value="name-asc">Name: A to Z</option>
+                            <option value="name-desc">Name: Z to A</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="search-box">
+                    <input type="text" placeholder="Search products..." [(ngModel)]="searchQuery"
+                           (input)="onSearchChange()">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+
+                <div class="view-toggle">
+                    <button class="view-btn" [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')"
+                            title="Grid View">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" [class.active]="viewMode === 'list'" (click)="setViewMode('list')"
+                            title="List View">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button class="view-btn" [class.active]="viewMode === 'large-grid'" (click)="setViewMode('large-grid')"
+                            title="Large Grid View">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="view-btn" [class.active]="viewMode === 'four-grid'" (click)="setViewMode('four-grid')"
+                            title="Four Grid View">
+                        <i class="fas fa-grip-horizontal"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-      </section>
+    </section>
+
+    <!-- Main Shop Content -->
+    <div class="container">
+        <div class="shop-layout">
+            <!-- Enhanced Sidebar -->
+            <aside class="sidebar">
+                <!-- Categories Filter -->
+                <div class="filter-section">
+                    <h3 class="filter-title">Categories</h3>
+                    <ul class="category-list">
+                        <li [class.active]="!selectedCategoryId" (click)="filterByCategory(null)">
+                            <span>All Products</span>
+                            <span class="category-count">{{getCategoryCount(0)}}</span>
+                        </li>
+                        <li *ngFor="let cat of categories"
+                            [class.active]="selectedCategoryId === cat.id"
+                            (click)="filterByCategory(cat)">
+                            <span>{{cat.name}}</span>
+                            <span class="category-count">{{getCategoryCount(cat.id)}}</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Enhanced Price Filter -->
+                <div class="filter-section">
+                    <h3 class="filter-title">Price Range</h3>
+                    <div class="price-filter">
+                        <div class="price-inputs">
+                            <input type="number" class="price-input" placeholder="Min"
+                                   [(ngModel)]="selectedMinPrice" (change)="onPriceChange()">
+                            <input type="number" class="price-input" placeholder="Max"
+                                   [(ngModel)]="selectedMaxPrice" (change)="onPriceChange()">
+                        </div>
+                        <div class="price-range">
+                            <div class="range-slider">
+                                <div class="range-track"></div>
+                                <div class="range-progress" [style.left.%]="(selectedMinPrice / 1000) * 100"
+                                     [style.right.%]="100 - (selectedMaxPrice / 1000) * 100"></div>
+                                <input type="range" min="0" max="1000" class="range-input"
+                                       [(ngModel)]="selectedMinPrice" (input)="onPriceChange()"
+                                       [style.zIndex]="selectedMinPrice > selectedMaxPrice ? 1 : 0">
+                                <input type="range" min="0" max="1000" class="range-input"
+                                       [(ngModel)]="selectedMaxPrice" (input)="onPriceChange()">
+                            </div>
+                            <div class="range-values">
+                                <span>${{selectedMinPrice || 0}}</span>
+                                <span>${{selectedMaxPrice || 1000}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clear Filters Button -->
+                <div class="filter-section">
+                    <button class="btn-reset" (click)="resetFilters()">
+                        <i class="fas fa-refresh"></i>
+                        Clear All Filters
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Enhanced Products Section -->
+            <section class="products-section">
+                <div class="products-grid"
+                     [ngClass]="{
+                        'grid-view': viewMode === 'grid',
+                        'list-view': viewMode === 'list',
+                        'large-grid-view': viewMode === 'large-grid',
+                        'four-grid-view': viewMode === 'four-grid'
+                     }">
+                    <!-- Enhanced Product Card -->
+                    <div class="product-card" *ngFor="let product of filteredProducts">
+                        <div class="product-image">
+                            <img [src]="'http://localhost:5149' + (product.images[0].imgURL || '/assets/placeholder-product.png')"
+                                 [alt]="product.name">
+                            <div class="product-badges">
+                                <span class="badge sale" *ngIf="product.oldPrice">Sale</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="action-btn" title="Quick View" (click)="quickView(product)">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn" title="Add to Wishlist" (click)="addToWishlist(product)">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <button class="action-btn" title="Compare" (click)="addToCompare(product)">
+                                    <i class="fas fa-balance-scale"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">{{product['category']?.name || 'General'}}</div>
+                            <h3 class="product-title">{{product.name}}</h3>
+                            <div class="product-rating">
+                                <span class="rating-count">({{product.reviewCount || 0}})</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">${{product.newPrice || product.price}}</span>
+                                <span class="old-price" *ngIf="product.oldPrice">${{product.oldPrice}}</span>
+                            </div>
+                            <button class="add-to-cart" (click)="addToCart(product)">
+                                <i class="fas fa-shopping-cart"></i>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Products Message -->
+                <div class="no-products" *ngIf="filteredProducts.length === 0">
+                    <div class="no-products-content">
+                        <i class="fas fa-search" style="font-size: 48px; color: #ccc; margin-bottom: 16px;"></i>
+                        <h3>No products found</h3>
+                        <p>Try adjusting your search criteria or filters</p>
+                        <button class="btn-reset" (click)="resetFilters()">
+                            <i class="fas fa-refresh"></i>
+                            Reset Filters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Enhanced Pagination -->
+                <div class="pagination" *ngIf="filteredProducts.length > 0 && totalPages > 1">
+                    <ul>
+                        <li [class.disabled]="currentPage === 1">
+                            <a (click)="previousPage()" *ngIf="currentPage > 1">
+                                <i class="fas fa-chevron-left"></i>
+                                Previous
+                            </a>
+                            <span *ngIf="currentPage === 1">
+                                <i class="fas fa-chevron-left"></i>
+                                Previous
+                            </span>
+                        </li>
+
+                        <li *ngFor="let page of getPageNumbers()"
+                            [class.active]="page === currentPage">
+                            <a (click)="goToPage(page)">{{page}}</a>
+                        </li>
+
+                        <li [class.disabled]="currentPage === totalPages">
+                            <a (click)="nextPage()" *ngIf="currentPage < totalPages">
+                                Next
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                            <span *ngIf="currentPage === totalPages">
+                                Next
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
     </div>
-  </div>
 </div>

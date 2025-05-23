@@ -31,7 +31,7 @@ export class LoginComponent {
           // Handle error
           this.errorMessage = error.error.message || 'Login failed';
           this.toast.error(this.errorMessage ?? 'Login failed', 'Error');
-          this.accountExists = true; // Set to true if login fails
+          this.accountExists = true; 
         }
       });
   }

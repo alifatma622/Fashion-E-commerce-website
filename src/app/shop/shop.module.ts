@@ -4,8 +4,6 @@ import { ShopComponent } from './shop.component';
 import { ShopRoutingModule } from './shop-routing.module';
 import { FormsModule } from '@angular/forms';
 
-
-
 @NgModule({
   declarations: [
     ShopComponent
@@ -17,6 +15,6 @@ import { FormsModule } from '@angular/forms';
   ],
   exports: [
     ShopComponent
-  ],
+  ]
 })
 export class ShopModule { }
